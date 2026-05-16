@@ -11,27 +11,27 @@ function Card({ children, className = "" }: { children: React.ReactNode; classNa
 
 export function IntelligencePreview() {
   return (
-    <section id="intelligence" className="py-28 border-t border-black/[0.06] dark:border-white/[0.08] relative overflow-hidden">
+    <section id="intelligence" className="py-16 sm:py-20 lg:py-28 border-t border-black/[0.06] dark:border-white/[0.08] relative overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(50%_40%_at_50%_0%,rgba(134,239,172,0.12),transparent_70%)]" />
 
-      <div className="max-w-[1280px] mx-auto px-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <div className="text-emerald-700" style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em" }}>
             INTELLIGENCE LAYER
           </div>
           <h2 className="mt-3 text-neutral-950 dark:text-white tracking-tight"
-              style={{ fontSize: "clamp(32px, 3.6vw, 52px)", lineHeight: 1.05, fontWeight: 560, letterSpacing: "-0.03em" }}>
+              style={{ fontSize: "clamp(28px, 3.6vw, 52px)", lineHeight: 1.05, fontWeight: 560, letterSpacing: "-0.03em" }}>
             See every decision the system is about to make.
           </h2>
-          <p className="mt-5 text-neutral-600 dark:text-neutral-400" style={{ fontSize: 16, lineHeight: 1.6 }}>
+          <p className="mt-4 sm:mt-5 text-neutral-600 dark:text-neutral-400" style={{ fontSize: "clamp(14px, 1.1vw, 16px)", lineHeight: 1.6 }}>
             Confidence scores, forecasts, allocation maps, similarity matches and agent reasoning —
             surfaced inline, so reviewers always know what to trust.
           </p>
         </div>
 
-        <div className="mt-14 grid lg:grid-cols-12 gap-6">
+        <div className="mt-10 sm:mt-14 grid sm:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6">
           {/* Forecast */}
-          <Card className="lg:col-span-5 p-6">
+          <Card className="sm:col-span-2 lg:col-span-5 p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-neutral-500" style={{ fontSize: 12 }}>
                 <TrendingUp size={13} /> 14-day Demand Forecast
@@ -42,7 +42,7 @@ export function IntelligencePreview() {
               </span>
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <div className="text-neutral-950 dark:text-white" style={{ fontSize: 36, fontWeight: 560, letterSpacing: "-0.03em" }}>14,820</div>
+              <div className="text-neutral-950 dark:text-white" style={{ fontSize: "clamp(28px, 3vw, 36px)", fontWeight: 560, letterSpacing: "-0.03em" }}>14,820</div>
               <div className="text-neutral-500" style={{ fontSize: 13 }}>units across 42 branches</div>
             </div>
             <svg viewBox="0 0 300 90" className="mt-4 w-full">
@@ -65,7 +65,7 @@ export function IntelligencePreview() {
           </Card>
 
           {/* Allocation map */}
-          <Card className="lg:col-span-4 p-6">
+          <Card className="lg:col-span-4 p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-neutral-500" style={{ fontSize: 12 }}>
                 <MapPin size={13} /> Allocation Map
@@ -96,7 +96,7 @@ export function IntelligencePreview() {
           </Card>
 
           {/* Similarity matches */}
-          <Card className="lg:col-span-3 p-6">
+          <Card className="lg:col-span-3 p-4 sm:p-6">
             <div className="flex items-center gap-2 text-neutral-500" style={{ fontSize: 12 }}>
               <Sparkles size={13} /> Similarity Matches
             </div>
@@ -127,7 +127,7 @@ export function IntelligencePreview() {
           </Card>
 
           {/* Agent log */}
-          <Card className="lg:col-span-7 p-6">
+          <Card className="sm:col-span-2 lg:col-span-7 p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-neutral-500" style={{ fontSize: 12 }}>
                 <FileText size={13} /> Agent Reasoning Log
@@ -136,7 +136,7 @@ export function IntelligencePreview() {
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> live
               </div>
             </div>
-            <div className="mt-4 font-mono text-neutral-700 dark:text-neutral-300 space-y-1.5" style={{ fontSize: 12, lineHeight: 1.6 }}>
+            <div className="mt-4 font-mono text-neutral-700 dark:text-neutral-300 space-y-1.5 overflow-x-auto" style={{ fontSize: "clamp(10px, 1vw, 12px)", lineHeight: 1.6 }}>
               {[
                 ["09:14:02", "intake", "SKU-48201 received · 3 sources merged"],
                 ["09:14:04", "matching", "embeddings ↦ 7/7 attributes matched (cosine 0.94)"],
@@ -145,30 +145,30 @@ export function IntelligencePreview() {
                 ["09:14:07", "allocation", "branch-weighted plan · 42 stores · capacity ok"],
                 ["09:14:08", "approval", "queued · 3 reviewers · SLA 4h"],
               ].map(([t, tag, msg]) => (
-                <div key={t} className="flex items-start gap-3">
-                  <span className="text-neutral-400">{t}</span>
-                  <span className="px-1.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400" style={{ fontSize: 10.5 }}>{tag}</span>
-                  <span className="text-neutral-800 dark:text-neutral-200">{msg}</span>
+                <div key={t} className="flex items-start gap-2 sm:gap-3 whitespace-nowrap">
+                  <span className="text-neutral-400 shrink-0">{t}</span>
+                  <span className="px-1.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 shrink-0" style={{ fontSize: 10.5 }}>{tag}</span>
+                  <span className="text-neutral-800 dark:text-neutral-200 truncate">{msg}</span>
                 </div>
               ))}
             </div>
           </Card>
 
           {/* Insights */}
-          <Card className="lg:col-span-5 p-6">
+          <Card className="sm:col-span-2 lg:col-span-5 p-4 sm:p-6">
             <div className="flex items-center gap-2 text-neutral-500" style={{ fontSize: 12 }}>
               <BarChart3 size={13} /> Operational Insights
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-4">
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4">
               {[
                 ["Time to shelf", "3.2d", "−61% vs manual"],
                 ["Onboarding accuracy", "97.4%", "+12.8pp"],
                 ["Stock-out risk", "1.6%", "−4.1pp"],
                 ["Approval cycle", "4.1h", "−72%"],
               ].map(([k, v, d]) => (
-                <div key={k} className="rounded-xl border border-black/[0.05] dark:border-white/[0.06] p-4">
+                <div key={k} className="rounded-xl border border-black/[0.05] dark:border-white/[0.06] p-3 sm:p-4">
                   <div className="text-neutral-500" style={{ fontSize: 11 }}>{k}</div>
-                  <div className="mt-1 text-neutral-950 dark:text-white" style={{ fontSize: 22, fontWeight: 560, letterSpacing: "-0.02em" }}>{v}</div>
+                  <div className="mt-1 text-neutral-950 dark:text-white" style={{ fontSize: "clamp(18px, 2vw, 22px)", fontWeight: 560, letterSpacing: "-0.02em" }}>{v}</div>
                   <div className="text-emerald-600" style={{ fontSize: 11, fontWeight: 600 }}>{d}</div>
                 </div>
               ))}

@@ -98,8 +98,10 @@ export function Canvas({ running, states, activeId, logs, onOpenStage }: CanvasP
   const [hover, setHover] = useState<StageId | null>(null);
   const [showLogs, setShowLogs] = useState(true);
   const [showMinimap, setShowMinimap] = useState(true);
+  const isMobile = containerSize.w > 0 && containerSize.w < 768;
 
   const dragRef = useRef<{ sx: number; sy: number; vx: number; vy: number } | null>(null);
+  const touchRef = useRef<{ sx: number; sy: number; vx: number; vy: number; pinchDist?: number; pinchK?: number } | null>(null);
   const stageMap = useMemo(() => Object.fromEntries(stages.map((s) => [s.id, s])) as Record<StageId, Stage>, []);
 
   useEffect(() => {
@@ -115,12 +117,12 @@ export function Canvas({ running, states, activeId, logs, onOpenStage }: CanvasP
 
   const fit = () => {
     if (!containerSize.w) return;
-    const padX = 80, padY = 60;
+    const padX = isMobile ? 20 : 80, padY = isMobile ? 20 : 60;
     const k = Math.min(
       (containerSize.w - padX * 2) / WORLD_W,
       (containerSize.h - padY * 2) / WORLD_H,
     );
-    const kk = Math.max(0.3, Math.min(1, k));
+    const kk = Math.max(0.2, Math.min(1, k));
     setView({
       x: (containerSize.w - WORLD_W * kk) / 2,
       y: (containerSize.h - WORLD_H * kk) / 2,
@@ -158,6 +160,35 @@ export function Canvas({ running, states, activeId, logs, onOpenStage }: CanvasP
   };
   const stopDrag = () => { dragRef.current = null; };
 
+  /* Touch handlers for mobile pan/pinch */
+  const onTouchStart = (e: React.TouchEvent) => {
+    if ((e.target as HTMLElement).closest("[data-node]")) return;
+    if (e.touches.length === 1) {
+      const t = e.touches[0];
+      touchRef.current = { sx: t.clientX, sy: t.clientY, vx: view.x, vy: view.y };
+    } else if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      touchRef.current = { sx: 0, sy: 0, vx: view.x, vy: view.y, pinchDist: Math.hypot(dx, dy), pinchK: view.k };
+    }
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault();
+    const tr = touchRef.current;
+    if (!tr) return;
+    if (e.touches.length === 1 && !tr.pinchDist) {
+      const t = e.touches[0];
+      setView((v) => ({ ...v, x: tr.vx + (t.clientX - tr.sx), y: tr.vy + (t.clientY - tr.sy) }));
+    } else if (e.touches.length === 2 && tr.pinchDist && tr.pinchK) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      const k = Math.max(0.2, Math.min(2, tr.pinchK * (dist / tr.pinchDist)));
+      setView((v) => ({ ...v, k }));
+    }
+  };
+  const onTouchEnd = () => { touchRef.current = null; };
+
   /* ------------------------------------------------------------------ */
   /* Rendering                                                           */
   /* ------------------------------------------------------------------ */
@@ -170,7 +201,10 @@ export function Canvas({ running, states, activeId, logs, onOpenStage }: CanvasP
       onMouseMove={onMouseMove}
       onMouseUp={stopDrag}
       onMouseLeave={stopDrag}
-      className="relative flex-1 overflow-hidden bg-[#fafaf9] dark:bg-neutral-950 cursor-grab active:cursor-grabbing select-none"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      className="relative flex-1 overflow-hidden bg-[#fafaf9] dark:bg-neutral-950 cursor-grab active:cursor-grabbing select-none touch-canvas"
     >
       {/* Dotted grid */}
       <div
@@ -366,13 +400,13 @@ export function Canvas({ running, states, activeId, logs, onOpenStage }: CanvasP
       </div>
 
       {/* Live AI status pill */}
-      <div className="absolute top-4 right-4 z-10 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/85 dark:bg-neutral-900/85 backdrop-blur-md border border-black/[0.06] dark:border-white/[0.08] shadow-sm">
+      <div className="absolute top-2 sm:top-4 right-2 sm:right-4 z-10 inline-flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white/85 dark:bg-neutral-900/85 backdrop-blur-md border border-black/[0.06] dark:border-white/[0.08] shadow-sm">
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
           <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
         </span>
-        <span className="text-neutral-700 dark:text-neutral-300" style={{ fontSize: 11.5, fontWeight: 550 }}>
-          {running && activeId ? `executing · ${activeId}` : running ? "orchestrating" : activeId ? "paused" : "idle · press Start"}
+        <span className="text-neutral-700 dark:text-neutral-300" style={{ fontSize: isMobile ? 10 : 11.5, fontWeight: 550 }}>
+          {running && activeId ? `${activeId}` : running ? "running" : activeId ? "paused" : "idle"}
         </span>
       </div>
 
@@ -395,21 +429,27 @@ export function Canvas({ running, states, activeId, logs, onOpenStage }: CanvasP
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            className="absolute bottom-4 right-4 w-[320px] z-10 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25)] overflow-hidden"
+            className={isMobile
+              ? "absolute bottom-0 left-0 right-0 z-10 rounded-t-2xl border-t border-black/[0.06] dark:border-white/[0.08] bg-white/95 dark:bg-neutral-900/95 backdrop-blur-xl shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.2)] overflow-hidden max-h-[45vh]"
+              : "absolute bottom-4 right-4 w-[320px] z-10 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25)] overflow-hidden"
+            }
           >
             <div className="px-3 py-2 flex items-center gap-2 border-b border-black/[0.05] dark:border-white/[0.06]">
               <Icons.Terminal size={12} className="text-emerald-500" />
               <span className="text-neutral-700 dark:text-neutral-300" style={{ fontSize: 11.5, fontWeight: 600 }}>live agent log</span>
-              <span className="ml-auto text-neutral-400" style={{ fontSize: 10.5 }}>v3.2 · 47 agents</span>
+              <span className="ml-auto text-neutral-400" style={{ fontSize: 10.5 }}>{isMobile ? "" : "v3.2 · 47 agents"}</span>
+              {isMobile && (
+                <button onClick={() => setShowLogs(false)} className="ml-auto text-neutral-400 hover:text-neutral-700 dark:hover:text-white p-1"><Icons.X size={14} /></button>
+              )}
             </div>
             <LogList logs={logs} />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Minimap */}
+      {/* Minimap — hidden on mobile */}
       <AnimatePresence>
-        {showMinimap && containerSize.w > 0 && (
+        {showMinimap && !isMobile && containerSize.w > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

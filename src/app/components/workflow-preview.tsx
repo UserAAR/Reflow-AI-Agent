@@ -35,23 +35,23 @@ function Node({ x, y, icon, label, sub, active, conf, delay = 0 }: NodeProps) {
       style={{ left: `${x}%`, top: `${y}%` }}
     >
       <div
-        className={`relative flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white dark:bg-neutral-900 border ${
+        className={`relative flex items-center gap-1.5 sm:gap-2.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-white dark:bg-neutral-900 border ${
           active ? "border-emerald-300/80 shadow-[0_0_0_4px_rgba(134,239,172,0.18),0_8px_24px_-8px_rgba(16,185,129,0.25)]" : "border-black/[0.06] dark:border-white/[0.08] shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.1)]"
         }`}
       >
         <div
-          className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+          className={`w-5 h-5 sm:w-7 sm:h-7 rounded-md sm:rounded-lg flex items-center justify-center ${
             active ? "bg-emerald-50 text-emerald-600" : "bg-neutral-50 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300"
           }`}
         >
           {icon}
         </div>
-        <div className="pr-1">
-          <div style={{ fontSize: 11.5, fontWeight: 550, letterSpacing: "-0.01em" }} className="text-neutral-900 dark:text-neutral-100 leading-tight whitespace-nowrap">
+        <div className="pr-0.5 sm:pr-1">
+          <div style={{ fontSize: "clamp(9px, 1.2vw, 11.5px)", fontWeight: 550, letterSpacing: "-0.01em" }} className="text-neutral-900 dark:text-neutral-100 leading-tight whitespace-nowrap">
             {label}
           </div>
           {sub && (
-            <div style={{ fontSize: 10 }} className="text-neutral-500 leading-tight whitespace-nowrap">
+            <div style={{ fontSize: "clamp(7.5px, 1vw, 10px)" }} className="text-neutral-500 leading-tight whitespace-nowrap hidden sm:block">
               {sub}
             </div>
           )}
@@ -64,7 +64,7 @@ function Node({ x, y, icon, label, sub, active, conf, delay = 0 }: NodeProps) {
         )}
         {conf !== undefined && (
           <div
-            className="absolute -top-2 -right-2 px-1.5 py-0.5 rounded-md bg-white dark:bg-neutral-900 border border-emerald-200 text-emerald-700"
+            className="absolute -top-2 -right-2 px-1 sm:px-1.5 py-0.5 rounded-md bg-white dark:bg-neutral-900 border border-emerald-200 text-emerald-700 hidden sm:block"
             style={{ fontSize: 9.5, fontWeight: 600 }}
           >
             {conf}%
@@ -81,8 +81,8 @@ function MiniChip({ x, y, label, delay = 0 }: { x: number; y: number; label: str
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay, duration: 0.4 }}
-      className="absolute -translate-x-1/2 -translate-y-1/2 px-2 py-1 rounded-md bg-white dark:bg-neutral-900 border border-black/[0.06] dark:border-white/[0.08] text-neutral-600 dark:text-neutral-400 shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
-      style={{ left: `${x}%`, top: `${y}%`, fontSize: 10, fontWeight: 500 }}
+      className="absolute -translate-x-1/2 -translate-y-1/2 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md bg-white dark:bg-neutral-900 border border-black/[0.06] dark:border-white/[0.08] text-neutral-600 dark:text-neutral-400 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hidden lg:block"
+      style={{ left: `${x}%`, top: `${y}%`, fontSize: "clamp(8px, 1vw, 10px)", fontWeight: 500 }}
     >
       {label}
     </motion.div>
@@ -117,23 +117,24 @@ export function WorkflowPreview() {
 
       <div className="relative rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-gradient-to-b from-white to-neutral-50/60 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.18),0_1px_2px_rgba(0,0,0,0.04)] overflow-hidden">
         {/* Window chrome */}
-        <div className="flex items-center justify-between px-4 h-9 border-b border-black/[0.05] dark:border-white/[0.06] bg-white dark:bg-neutral-900/60 backdrop-blur">
+        <div className="flex items-center justify-between px-3 sm:px-4 h-8 sm:h-9 border-b border-black/[0.05] dark:border-white/[0.06] bg-white dark:bg-neutral-900/60 backdrop-blur">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-neutral-200" />
-            <span className="w-2.5 h-2.5 rounded-full bg-neutral-200" />
-            <span className="w-2.5 h-2.5 rounded-full bg-neutral-200" />
+            <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-neutral-200" />
+            <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-neutral-200" />
+            <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-neutral-200" />
           </div>
           <div className="flex items-center gap-2 text-neutral-500" style={{ fontSize: 11 }}>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            workflow · running · agent_v3.2
+            <span className="hidden sm:inline">workflow · running · agent_v3.2</span>
+            <span className="sm:hidden">running</span>
           </div>
-          <div className="text-neutral-400" style={{ fontSize: 11 }}>reflow / new-product</div>
+          <div className="text-neutral-400 hidden sm:block" style={{ fontSize: 11 }}>reflow / new-product</div>
         </div>
 
         {/* Canvas */}
         <div
           className="relative w-full bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.045)_1px,transparent_0)]"
-          style={{ backgroundSize: "18px 18px", aspectRatio: "5 / 6", minHeight: 620 }}
+          style={{ backgroundSize: "18px 18px", aspectRatio: "5 / 6", minHeight: "clamp(400px, 50vw, 620px)" }}
         >
           {/* Connection lines */}
           <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 120">
@@ -208,12 +209,12 @@ export function WorkflowPreview() {
 
           <Node x={50} y={111} icon={<UserCheck size={14} />} label="Human Approval" sub="3 reviewers · 2 ok" />
 
-          {/* Floating side panels */}
+          {/* Floating side panels — hidden on small */}
           <motion.div
             initial={{ opacity: 0, x: -6 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6 }}
-            className="absolute left-3 top-3 w-[150px] rounded-lg border border-black/[0.06] dark:border-white/[0.08] bg-white dark:bg-neutral-900/95 backdrop-blur shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] p-2.5"
+            className="absolute left-3 top-3 w-[130px] lg:w-[150px] rounded-lg border border-black/[0.06] dark:border-white/[0.08] bg-white dark:bg-neutral-900/95 backdrop-blur shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] p-2 lg:p-2.5 hidden lg:block"
           >
             <div className="flex items-center justify-between mb-1">
               <span className="text-neutral-500" style={{ fontSize: 10 }}>AI Confidence</span>
@@ -236,7 +237,7 @@ export function WorkflowPreview() {
             initial={{ opacity: 0, x: 6 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.7 }}
-            className="absolute right-3 top-3 w-[160px] rounded-lg border border-black/[0.06] dark:border-white/[0.08] bg-white dark:bg-neutral-900/95 backdrop-blur shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] p-2.5"
+            className="absolute right-3 top-3 w-[140px] lg:w-[160px] rounded-lg border border-black/[0.06] dark:border-white/[0.08] bg-white dark:bg-neutral-900/95 backdrop-blur shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] p-2 lg:p-2.5 hidden lg:block"
           >
             <div className="text-neutral-500 mb-1.5" style={{ fontSize: 10 }}>Top Matches</div>
             {[
@@ -255,7 +256,7 @@ export function WorkflowPreview() {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
-            className="absolute left-3 bottom-3 rounded-lg border border-black/[0.06] dark:border-white/[0.08] bg-white dark:bg-neutral-900/95 backdrop-blur shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] p-2.5 w-[200px]"
+            className="absolute left-3 bottom-3 rounded-lg border border-black/[0.06] dark:border-white/[0.08] bg-white dark:bg-neutral-900/95 backdrop-blur shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] p-2 lg:p-2.5 w-[170px] lg:w-[200px] hidden md:block"
           >
             <div className="text-neutral-500 mb-1" style={{ fontSize: 10 }}>Allocation Map</div>
             <div className="grid grid-cols-12 gap-[2px]">
@@ -280,7 +281,7 @@ export function WorkflowPreview() {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0 }}
-            className="absolute right-3 bottom-3 rounded-lg border border-black/[0.06] dark:border-white/[0.08] bg-white dark:bg-neutral-900/95 backdrop-blur shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] p-2.5 w-[180px]"
+            className="absolute right-3 bottom-3 rounded-lg border border-black/[0.06] dark:border-white/[0.08] bg-white dark:bg-neutral-900/95 backdrop-blur shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] p-2 lg:p-2.5 w-[160px] lg:w-[180px] hidden md:block"
           >
             <div className="flex items-center gap-1.5 mb-1.5">
               <Activity size={11} className="text-emerald-600" />
@@ -300,15 +301,16 @@ export function WorkflowPreview() {
         </div>
 
         {/* Bottom status */}
-        <div className="flex items-center justify-between border-t border-black/[0.05] dark:border-white/[0.06] px-4 h-9 text-neutral-500 bg-white dark:bg-neutral-900/60" style={{ fontSize: 11 }}>
+        <div className="flex items-center justify-between border-t border-black/[0.05] dark:border-white/[0.06] px-3 sm:px-4 h-8 sm:h-9 text-neutral-500 bg-white dark:bg-neutral-900/60" style={{ fontSize: 11 }}>
           <span>12 nodes · 18 edges</span>
-          <span className="flex items-center gap-3">
+          <span className="hidden sm:flex items-center gap-3">
             <span>lat 184ms</span>
             <span>·</span>
             <span>cost $0.013</span>
             <span>·</span>
             <span className="text-emerald-600">healthy</span>
           </span>
+          <span className="sm:hidden text-emerald-600">healthy</span>
         </div>
       </div>
     </div>

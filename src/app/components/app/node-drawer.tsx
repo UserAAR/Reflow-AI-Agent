@@ -24,7 +24,7 @@ export function NodeDrawer({ stage, onClose }: { stage: Stage | null; onClose: (
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 420, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
-            className="absolute right-0 top-0 bottom-0 w-[420px] z-40 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-2xl border-l border-black/[0.06] dark:border-white/[0.08] shadow-[-30px_0_80px_-40px_rgba(0,0,0,0.35)] flex flex-col"
+            className="absolute right-0 top-0 bottom-0 w-full sm:w-[360px] lg:w-[420px] z-40 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-2xl border-l border-black/[0.06] dark:border-white/[0.08] shadow-[-30px_0_80px_-40px_rgba(0,0,0,0.35)] flex flex-col"
           >
             <DrawerBody stage={stage} onClose={onClose} />
           </motion.aside>

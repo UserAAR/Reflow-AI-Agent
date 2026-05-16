@@ -27,9 +27,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 grid lg:grid-cols-[1.05fr_1fr]">
+    <div className="min-h-screen w-full bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 grid lg:grid-cols-[1.05fr_1fr] overflow-hidden">
       {/* Left — atmosphere */}
-      <div className="relative hidden lg:flex flex-col p-10 border-r border-black/[0.06] dark:border-white/[0.08] overflow-hidden bg-gradient-to-br from-emerald-50/40 via-white to-white dark:from-emerald-950/30 dark:via-neutral-950 dark:to-neutral-950">
+      <div className="relative hidden lg:flex flex-col p-8 xl:p-10 border-r border-black/[0.06] dark:border-white/[0.08] overflow-hidden bg-gradient-to-br from-emerald-50/40 via-white to-white dark:from-emerald-950/30 dark:via-neutral-950 dark:to-neutral-950">
         <div className="absolute inset-0 -z-0 bg-[radial-gradient(60%_50%_at_30%_20%,rgba(134,239,172,0.20),transparent_70%),radial-gradient(40%_40%_at_80%_80%,rgba(30,64,175,0.10),transparent_70%)]" />
         <div className="absolute inset-0 -z-0 opacity-50 dark:opacity-30 bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.05)_1px,transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.06)_1px,transparent_0)]"
              style={{ backgroundSize: "22px 22px" }} />
@@ -87,7 +87,7 @@ export default function Login() {
       </div>
 
       {/* Right — form */}
-      <div className="relative flex flex-col p-8 lg:p-12">
+      <div className="relative flex flex-col p-5 sm:p-8 lg:p-12">
         <div className="flex items-center justify-between">
           <Link to="/" className="lg:hidden"><Logo /></Link>
           <div className="ml-auto flex items-center gap-2">
@@ -132,10 +132,10 @@ export default function Login() {
               />
             </Field>
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <label className="inline-flex items-center gap-2 text-neutral-600 dark:text-neutral-400" style={{ fontSize: 12.5 }}>
-                <input type="checkbox" defaultChecked className="accent-emerald-500" />
-                Keep me signed in on this device
+                <input type="checkbox" defaultChecked className="accent-emerald-500 w-4 h-4" />
+                Keep me signed in
               </label>
               <a href="#" className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white" style={{ fontSize: 12.5 }}>
                 Forgot?
@@ -145,7 +145,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="group w-full inline-flex items-center justify-center gap-2 bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 px-5 py-3 rounded-xl hover:opacity-90 transition shadow-[0_8px_24px_-8px_rgba(0,0,0,0.4)] disabled:opacity-70"
+              className="group w-full inline-flex items-center justify-center gap-2 bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 px-5 py-3.5 sm:py-3 rounded-xl hover:opacity-90 transition shadow-[0_8px_24px_-8px_rgba(0,0,0,0.4)] disabled:opacity-70"
               style={{ fontSize: 14, fontWeight: 550 }}
             >
               {loading ? "Authenticating…" : "Sign In"}

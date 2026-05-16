@@ -84,7 +84,7 @@ export function SimilarityOverlay({
         initial={{ opacity: 0, scale: 0.97, y: 12 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 280, damping: 28 }}
-        className="relative w-[min(1120px,94vw)] h-[min(720px,86vh)] rounded-2xl bg-white dark:bg-neutral-950 border border-black/[0.06] dark:border-white/[0.08] shadow-[0_60px_120px_-30px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col"
+        className="relative w-[min(1120px,98vw)] h-[min(720px,96vh)] rounded-2xl bg-white dark:bg-neutral-950 border border-black/[0.06] dark:border-white/[0.08] shadow-[0_60px_120px_-30px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col"
       >
         {/* Header */}
         <div className="h-14 px-5 flex items-center gap-3 border-b border-black/[0.05] dark:border-white/[0.06] shrink-0">
@@ -118,21 +118,21 @@ export function SimilarityOverlay({
         </div>
 
         {/* Body */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] min-h-0">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] min-h-0 overflow-hidden">
           {/* LEFT — cycling product visuals */}
-          <div className="relative p-6 border-r border-black/[0.05] dark:border-white/[0.06] bg-gradient-to-br from-neutral-50 to-emerald-50/30 dark:from-neutral-950 dark:to-emerald-950/20 flex flex-col">
+          <div className="relative p-4 sm:p-6 lg:border-r border-b lg:border-b-0 border-black/[0.05] dark:border-white/[0.06] bg-gradient-to-br from-neutral-50 to-emerald-50/30 dark:from-neutral-950 dark:to-emerald-950/20 flex flex-col min-h-[200px] lg:min-h-0">
             <SectionTitle>{phase === "searching" ? "scanning visual space" : "matched product"}</SectionTitle>
 
             <div className="relative flex-1 flex items-center justify-center">
               {/* Pulsing rings */}
               {phase === "searching" && (
                 <>
-                  <span className="absolute w-72 h-72 rounded-full border border-emerald-300/30 animate-ping" />
-                  <span className="absolute w-56 h-56 rounded-full border border-emerald-400/40 animate-pulse" />
+                  <span className="absolute w-48 sm:w-72 h-48 sm:h-72 rounded-full border border-emerald-300/30 animate-ping" />
+                  <span className="absolute w-36 sm:w-56 h-36 sm:h-56 rounded-full border border-emerald-400/40 animate-pulse" />
                 </>
               )}
 
-              <div className="relative w-64 h-64 rounded-3xl overflow-hidden border border-black/[0.06] dark:border-white/[0.1] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] bg-white dark:bg-neutral-900">
+              <div className="relative w-40 h-40 sm:w-64 sm:h-64 rounded-2xl sm:rounded-3xl overflow-hidden border border-black/[0.06] dark:border-white/[0.1] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] bg-white dark:bg-neutral-900">
                 <AnimatePresence mode="popLayout">
                   <motion.img
                     key={phase === "searching" ? thumbIdx : "final"}
@@ -167,7 +167,7 @@ export function SimilarityOverlay({
           </div>
 
           {/* RIGHT — fields with skeleton or matched */}
-          <div className="p-6 overflow-y-auto">
+          <div className="p-4 sm:p-6 overflow-y-auto">
             <SectionTitle>{phase === "searching" ? "AI auto-detecting fields" : "match details"}</SectionTitle>
 
             {phase === "searching" ? (
@@ -214,7 +214,7 @@ export function SimilarityOverlay({
 
                 <div>
                   <SectionTitle>agent scores</SectionTitle>
-                  <div className="grid grid-cols-2 gap-1.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                     {[
                       ["Category match", "98.2%"],
                       ["Subcategory match", "96.8%"],
@@ -243,7 +243,7 @@ export function SimilarityOverlay({
         </div>
 
         {/* Footer */}
-        <div className="h-14 px-5 flex items-center gap-2 border-t border-black/[0.05] dark:border-white/[0.06] shrink-0">
+        <div className="h-auto sm:h-14 px-4 sm:px-5 py-3 sm:py-0 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 border-t border-black/[0.05] dark:border-white/[0.06] shrink-0">
           <div className="text-neutral-500" style={{ fontSize: 11.5 }}>
             {phase === "searching" ? "agents working — overlay will unlock when matched" : "ready to advance"}
           </div>

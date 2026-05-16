@@ -91,7 +91,7 @@ export function IntakeOverlay({
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0 }}
         transition={{ type: "spring", stiffness: 280, damping: 28 }}
-        className="relative w-[min(1180px,94vw)] h-[min(760px,88vh)] rounded-2xl bg-white dark:bg-neutral-950 border border-black/[0.06] dark:border-white/[0.08] shadow-[0_60px_120px_-30px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col"
+        className="relative w-[min(1180px,98vw)] h-[min(760px,96vh)] rounded-2xl bg-white dark:bg-neutral-950 border border-black/[0.06] dark:border-white/[0.08] shadow-[0_60px_120px_-30px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col"
       >
         {/* Header */}
         <div className="h-14 px-5 flex items-center gap-3 border-b border-black/[0.05] dark:border-white/[0.06] shrink-0">
@@ -122,9 +122,9 @@ export function IntakeOverlay({
         </div>
 
         {/* Body */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] min-h-0">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] min-h-0 overflow-hidden">
           {/* LEFT — uploads */}
-          <div className="p-6 border-r border-black/[0.05] dark:border-white/[0.06] overflow-y-auto space-y-4">
+          <div className="p-4 sm:p-6 lg:border-r border-b lg:border-b-0 border-black/[0.05] dark:border-white/[0.06] overflow-y-auto space-y-4">
             <SectionTitle>Files & images</SectionTitle>
 
             <div
@@ -148,7 +148,7 @@ export function IntakeOverlay({
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <UploadChip icon={<FileSpreadsheet size={13} />} label="CSV upload" onClick={() => fileRef.current?.click()} />
               <UploadChip icon={<FileSpreadsheet size={13} />} label="Excel upload" onClick={() => fileRef.current?.click()} />
               <UploadChip icon={<ImageIcon size={13} />} label="Product images" onClick={() => imageRef.current?.click()} />
@@ -194,7 +194,7 @@ export function IntakeOverlay({
           </div>
 
           {/* RIGHT — form */}
-          <div className="p-6 overflow-y-auto">
+          <div className="p-4 sm:p-6 overflow-y-auto">
             <div className="flex items-center justify-between mb-3">
               <SectionTitle>Product fields</SectionTitle>
               <button
@@ -206,7 +206,7 @@ export function IntakeOverlay({
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Field label="Title"        v={fields.title}       set={(v) => setFields({...fields, title: v})} />
               <Field label="Brand"        v={fields.brand}       set={(v) => setFields({...fields, brand: v})} />
               <Field label="Category"     v={fields.category}    set={(v) => setFields({...fields, category: v})} />
@@ -221,7 +221,7 @@ export function IntakeOverlay({
               <Field label="Origin"       v={fields.origin}      set={(v) => setFields({...fields, origin: v})} />
               <Field label="Supplier"     v={fields.supplier}    set={(v) => setFields({...fields, supplier: v})} />
               <Field label="Launch date"  v={fields.launchDate}  set={(v) => setFields({...fields, launchDate: v})} type="date" />
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <Field label="Description" v={fields.description} set={(v) => setFields({...fields, description: v})} textarea />
               </div>
             </div>
@@ -229,7 +229,7 @@ export function IntakeOverlay({
         </div>
 
         {/* Footer */}
-        <div className="h-14 px-5 flex items-center gap-2 border-t border-black/[0.05] dark:border-white/[0.06] shrink-0">
+        <div className="h-auto sm:h-14 px-4 sm:px-5 py-3 sm:py-0 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 border-t border-black/[0.05] dark:border-white/[0.06] shrink-0">
           <div className="text-neutral-500" style={{ fontSize: 11.5 }}>
             {done ? "submitted · advancing" : Object.values(fields).filter(Boolean).length + " of 15 fields filled"}
           </div>

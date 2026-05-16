@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   Plus, Minus, Maximize2, Search, Map, FileText,
   GitBranch, Filter, Layers, MessageSquare, ChevronDown, GripVertical,
@@ -18,15 +18,36 @@ type Props = {
 export function FloatingToolbar(props: Props) {
   const [pos, setPos] = useState({ x: 24, y: 24 });
   const [collapsed, setCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const dragRef = useRef<{ sx: number; sy: number; px: number; py: number } | null>(null);
 
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 select-none">
+        <div className="flex items-center gap-1 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25)] p-1.5">
+          <ToolBtn onClick={props.onZoomOut} title="Zoom out"><Minus size={16} /></ToolBtn>
+          <div className="px-2 text-neutral-500 tabular-nums text-center" style={{ fontSize: 11, lineHeight: "36px" }}>
+            {Math.round(props.zoom * 100)}%
+          </div>
+          <ToolBtn onClick={props.onZoomIn} title="Zoom in"><Plus size={16} /></ToolBtn>
+          <ToolBtn onClick={props.onFit} title="Fit view"><Maximize2 size={15} /></ToolBtn>
+          <span className="w-px h-5 bg-black/[0.06] dark:bg-white/[0.08] mx-0.5" />
+          <ToolBtn active={props.showLogs} onClick={props.toggleLogs} title="AI logs"><FileText size={15} /></ToolBtn>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className="absolute z-20 select-none"
-      style={{ left: pos.x, top: pos.y }}
-    >
+    <div className="absolute z-20 select-none" style={{ left: pos.x, top: pos.y }}>
       <div className="rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25)]">
-        {/* drag handle */}
         <div
           onMouseDown={(e) => {
             dragRef.current = { sx: e.clientX, sy: e.clientY, px: pos.x, py: pos.y };
@@ -48,17 +69,12 @@ export function FloatingToolbar(props: Props) {
           className="flex items-center justify-between px-2.5 py-1.5 border-b border-black/[0.05] dark:border-white/[0.06] cursor-grab active:cursor-grabbing"
         >
           <div className="flex items-center gap-1.5 text-neutral-500" style={{ fontSize: 11 }}>
-            <GripVertical size={11} />
-            workflow tools
+            <GripVertical size={11} /> workflow tools
           </div>
-          <button
-            onClick={() => setCollapsed((c) => !c)}
-            className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
-          >
+          <button onClick={() => setCollapsed((c) => !c)} className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white">
             <ChevronDown size={12} className={`transition-transform ${collapsed ? "-rotate-90" : ""}`} />
           </button>
         </div>
-
         {!collapsed && (
           <div className="p-1.5 grid grid-cols-1 gap-0.5">
             <Group>
@@ -102,7 +118,7 @@ function ToolBtn({ children, onClick, title, active }: { children: React.ReactNo
     <button
       onClick={onClick}
       title={title}
-      className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+      className={`w-9 h-9 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center transition-colors ${
         active
           ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400"
           : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/[0.05]"
